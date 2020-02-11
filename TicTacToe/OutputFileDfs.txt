@@ -1,0 +1,66 @@
+
+============NEW GAME============
+		   |  |  
+		 --------
+		   |  |  
+		 --------
+		   |  |  
+Iteration : 1 	 Players Turn
+		   |  |  
+		 --------
+		   |  |  
+		 --------
+		   |  |O 
+Iteration : 2 	 Computers Turn
+ Stack Elements(row=column): [Pair@4411d970, Pair@6442b0a6, Pair@60f82f98, Pair@35f983a6, Pair@7f690630, Pair@edf4efb, Pair@2f7a2457, Pair@566776ad]
+		   |  |  
+		 --------
+		   |  |X 
+		 --------
+		   |  |O 
+Iteration : 3 	 Players Turn
+		   |  |O 
+		 --------
+		   |  |X 
+		 --------
+		   |  |O 
+Iteration : 4 	 Computers Turn
+ Stack Elements(row=column): [Pair@4411d970, Pair@6442b0a6, Pair@60f82f98, Pair@35f983a6, Pair@7f690630, Pair@edf4efb]
+		   |  |O 
+		 --------
+		   |  |X 
+		 --------
+		   |X |O 
+Iteration : 5 	 Players Turn
+		   |  |O 
+		 --------
+		   |O |X 
+		 --------
+		   |X |O 
+Iteration : 6 	 Computers Turn
+ Stack Elements(row=column): [Pair@4411d970, Pair@6442b0a6, Pair@60f82f98, Pair@35f983a6]
+		   |X |O 
+		 --------
+		   |O |X 
+		 --------
+		   |X |O 
+Iteration : 7 	 Players Turn
+		   |X |O 
+		 --------
+		 O |O |X 
+		 --------
+		   |X |O 
+No. of Iteration: 7
+	 :: Player is the Winner!!
+		   |X |O 
+		 --------
+		 O |O |X 
+		 --------
+		   |X |O 
+
+============END GAME============
+		   |X |O 
+		 --------
+		 O |O |X 
+		 --------
+		   |X |O 

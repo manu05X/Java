@@ -1,9 +1,23 @@
+import java.util.*;
 import java.util.Scanner;
 import java.io.*;
-//import java.time.format.DateTimeFormatter;
-//import java.time.LocalDateTime;
+import javax.swing.*; 
 
-import javax.swing.*;
+				//defining the Pair class
+class Pair {				
+    public int a;
+    public int b;
+    Pair(int a,int b){
+        this.a = a;
+        this.b = b;
+    }
+    int getKey(){
+        return a;
+    }
+    int getValue(){
+        return b;
+    }
+}
 
 class MySwing extends JFrame
 {
@@ -22,24 +36,31 @@ class MySwing extends JFrame
 }
 
 
-public class TicTacToe
+public class TicTacToeDFS
 {
     final int SIZE = 3;
 
     private char board[][];
     private int count = 0;
+    private Stack <Pair> s;			//Taking Stack s as Pair for int
     
     private void setData()
     {
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < SIZE; i++) 
+		{
             for (int j = 0; j < SIZE; j++) 
+			{ 
                 board[i][j] = ' ';
+                s.push(new Pair(j+1,i+1));
+            }
         }
     }
+    
 
-    TicTacToe()
+    TicTacToeDFS()
     {
         board = new char[SIZE][SIZE];
+        s = new Stack<Pair>();
         this.setData();
     }
 
@@ -53,7 +74,8 @@ public class TicTacToe
             System.out.print("----");
         System.out.println();
 
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < SIZE; i++) 
+        {
             System.out.print(" " + (i+1) + " |");
             for (int j = 0; j < SIZE; j++)
                 System.out.print(" " + board[i][j]+ " |");
@@ -65,19 +87,20 @@ public class TicTacToe
         System.out.println();
     }
 
-    private int getPosition(char c) {
+    private int getPosition(char c) 
+    {
         boolean isbadinput = true;
         int x = 0;
         Scanner input = new Scanner(System.in);
         while (isbadinput) {
-            //System.out.printf("Enter the %c Co-ordinate: ",c);
-            if(c == 'Y')
+           if(c == 'Y')
                 System.out.printf("Enter the  row: ");
            else
                 System.out.printf("Enter the column: ");
 
-            x = input.nextInt();
-            if (x <= 0 || x > SIZE) 
+        x = input.nextInt();
+            
+        if (x <= 0 || x > SIZE) 
                 System.out.printf(" Invalid %c Co-ordinate!\n",c);
             else
                 isbadinput = false;
@@ -92,9 +115,10 @@ public class TicTacToe
         return true;
     }
 
-    boolean checkForVictory(int p, char[][] board) {
+    boolean checkForVictory(int p, char[][] board) 
+    {
         char c;
-        if(p == 0)
+        if(p == 0)  
             c = 'O';
         else
             c = 'X';
@@ -107,7 +131,8 @@ public class TicTacToe
             }
             for (int j = 0; j < SIZE; j++) 
             {
-                for (int i = 0; i < SIZE - 2; i++) {
+                for (int i = 0; i < SIZE - 2; i++) 
+                {
                     if (board[i][j] == c && board[i + 1][j] == c && board[i + 2][j] == c)
                         return true;
                 }       
@@ -122,8 +147,8 @@ public class TicTacToe
             }
             for (int i = 2; i < SIZE ; i++) 
             {
-                for (int j = 0; j < SIZE-2 ; j++) 
-                {
+                for (int j = 0; j < SIZE-2 ; j++)
+                 {
                     if (board[i][j] == c && board[i - 1][j + 1] == c && board[i - 2][j + 2] == c)
                         return true;
                 }
@@ -139,60 +164,61 @@ public class TicTacToe
         new MySwing(0, true);
     }
 
-    private void logToFile(int p, int x, int y, boolean positionPrint, boolean invalidPrint, boolean winPrint, boolean drawPrint, boolean startPrint, boolean endPrint) 
+    private void logToFile(int p, int x, int y, boolean positionPrint, boolean invalidPrint,boolean winPrint, boolean drawPrint,boolean startPrint, boolean endPrint) 
     {   
-/*        DateTimeFormatter myFormatObj =
-            DateTimeFormatter.ofPattern ("dd-MM-yyyy HH:mm:ss");
-
-        LocalDateTime myDateObj = LocalDateTime.now ();
-        String formattedDate = myDateObj.format (myFormatObj);
-*/        
         try
 		{
-			BufferedWriter out =
-				new BufferedWriter (new FileWriter ("OutPutictactoe.txt", true));
+			BufferedWriter out = new BufferedWriter (new FileWriter ("OutputFileDfs.txt", true));
 
 
-			if(positionPrint)
-				out.write("\tIteration : " + count + "\n");
+        if(positionPrint)
+		{
+            if(p==0)
+                out.write("Iteration : " + count + " \t Players Turn\n");
+            else
+                out.write("Iteration : " + count + " \t Computers Turn\n Stack Elements(row=column): " + s + "\n");
+        }
 
-			if(invalidPrint)
-				out.write("\t\t\t\tInvalid Position\n");
+        if(invalidPrint)
+            out.write("\t\t\t\tInvalid Position\n");
 
-			if(winPrint)
-				out.write("\tNo. of Iteration: " + count + "\n\t :: Player " + (p+1) + " is the Winner!!\n");
+        if(winPrint)
+		{
+            if(p == 0)
+                out.write("No. of Iteration: " + count + "\n\t :: Player is the Winner!!\n");
+            else
+                out.write("Computer is Winner!!\n");
+        }
+        if(drawPrint)
+            out.write( " :: !!DRAW!!\n");
 
-			if(drawPrint)
-				out.write( " :: !!DRAW!!\n");
+        if(startPrint)
+            out.write("\n============NEW GAME============\n");
 
-			if(startPrint)
-				out.write("\n============NEW GAME============\n");
+        if(endPrint)
+            out.write( "\n============END GAME============\n");    
 
-			if(endPrint)
-				out.write( "\n============END GAME============\n");    
-
-			for(int i = 0; i < SIZE; i++) 
+        for(int i = 0; i < SIZE; i++) 
+		{
+            out.write("\t\t");
+            for(int j = 0; j < SIZE; j++) 
 			{
-				out.write("\t\t");
-				for(int j = 0; j < SIZE; j++) 
-				{
-					if(j==0) 
-						out.write(" " + board[i][j] + " ");
-					else 
-						out.write("|" + board[i][j] + " ");
-				}
-				if(i==2)
-					out.write("\n");
-				else
-					out.write("\n\t\t --------\n");
-			}
-			out.close();
-		}
+				if(j==0) 
+					out.write(" " + board[i][j] + " ");
+                else 
+					out.write("|" + board[i][j] + " ");
+            }
+            if(i==2)
+				out.write("\n");
+            else
+				out.write("\n\t\t --------\n");
+        }
+		out.close();
+        }
         catch (IOException e)
 		{
       
 			System.out.println ("An error occurred while logging");
-      
 			e.printStackTrace ();
     
 		}
@@ -218,54 +244,76 @@ public class TicTacToe
         }
 
         if(checkForVictory('X',xmat) || checkForVictory('O',omat))
-                return false;
+            return false;
 
         return true;
     }
 
+/*
+    private void AIturns(int &x, int &y) {
+        while(board[s.peek().getKey()][s.peek().getValue()] != ' ') {
+            s.pop();
+        }
+        y = s.peek().getKey();
+        x = s.peek().getValue();
+    }
+*/
     public void play()
     {
         boolean isOver = false;
         this.disp();  
         int x, y;
+        x = y = 0;
         int i = 0;
         this.logToFile(0, 0, 0, false, false, false, false, true, false);
-        while(!isOver) 
-		{
-            System.out.println("PLayer " + (i+1) + ", Its Your Turn : ");
-            y = this.getPosition('Y');
-            x = this.getPosition('X');
-            
+        while(!isOver) {
+            if(i == 0) {
+                System.out.println("PLayer " + ", Its Your Turn : ");
+                y = this.getPosition('Y');
+                x = this.getPosition('X');
+            }else {
+                System.out.println("Stack : " + s);
+//              this.AIturns(x,y);
+
+                while(board[s.peek().getKey() - 1][s.peek().getValue() - 1] != ' ') {
+                    s.pop();
+                }
+                y = s.peek().getKey();
+                x = s.peek().getValue();
+
+                System.out.println("Computer turns : row=" + y + " column=" + x);
+                x--;
+                y--;
+            }
 
             if (this.placeMarker(x,y)) 
             {
                 this.count++;
-                if(i == 0)  
-					this.board[y][x] = 'O';
-                else    
-					this.board[y][x] = 'X';
-                System.out.print("\033\143");			//use to clear screen after output in Linux
+                if(i == 0)  this.board[y][x] = 'O';
+                else    this.board[y][x] = 'X';
+//                System.out.print("\033\143");  //use to clear screen after output in Linux
 
                 this.disp();
-				this.logToFile (i, x, y, true, false, false, false, false, false);
+                this.logToFile (i, x, y, true, false, false, false, false, false);
 
                 if((isOver = checkForVictory(i, this.board)))
                 {
-                    System.out.println("Player " + (i+0) + " Is the Winner\n\t\tCONGRATULATION!!");
+                    if(i==0)
+                        System.out.println("Player is the Winner\n\t\tCONGRATULATION!!");
+                    else
+                        System.out.println("Computer is the winer\n");
                     this.logToFile(i, 0, 0, false, false, true, false, false, false);
                     new MySwing(i, false);
                 }
                 if(++i == 2)
                     i = 0;
             }
-            else
-			{ 
+            else{ 
                 System.out.println("Its Already Occupoied\nTry Again");
                 this.logToFile(0, 0, 0, false, true, false, false, false, false );
             }
 
-            if(count == 9 || gonnaDraw())
-			{
+            if(count == 9 || gonnaDraw()){
                 isOver = true;
                 this.drawMsg();
             }
@@ -279,7 +327,7 @@ public class TicTacToe
 
         while (PlayAgain == 1)
         {
-            TicTacToe game = new TicTacToe();
+            TicTacToeDFS game = new TicTacToeDFS();
             game.play();
             
             Scanner input = new Scanner (System.in);

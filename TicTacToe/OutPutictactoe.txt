@@ -6,58 +6,58 @@
 		 --------
 		   |  |  
 	Iteration : 1
-		   |O |  
-		 --------
 		   |  |  
+		 --------
+		 O |  |  
 		 --------
 		   |  |  
 	Iteration : 2
-		   |O |  
-		 --------
 		   |  |  
 		 --------
-		   |  |X 
+		 O |  |  
+		 --------
+		 X |  |  
+				Invalid Position
+		   |  |  
+		 --------
+		 O |  |  
+		 --------
+		 X |  |  
 	Iteration : 3
-		   |O |  
+		   |  |  
 		 --------
-		   |O |  
+		 O |  |  
 		 --------
-		   |  |X 
+		 X |O |  
 	Iteration : 4
-		   |O |X 
+		   |  |  
 		 --------
+		 O |X |  
+		 --------
+		 X |O |  
+	Iteration : 5
 		   |O |  
 		 --------
-		   |  |X 
-	Iteration : 5
-		   |O |X 
+		 O |X |  
 		 --------
-		   |O |O 
-		 --------
-		   |  |X 
+		 X |O |  
 	Iteration : 6
 		   |O |X 
 		 --------
-		 X |O |O 
+		 O |X |  
 		 --------
-		   |  |X 
-	Iteration : 7
+		 X |O |  
+	No. of Iteration: 6
+	 :: Player 2 is the Winner!!
 		   |O |X 
 		 --------
-		 X |O |O 
+		 O |X |  
 		 --------
-		   |O |X 
-	No. of Iteration: 7
-	 :: Player 1 is the Winner!!
-		   |O |X 
-		 --------
-		 X |O |O 
-		 --------
-		   |O |X 
+		 X |O |  
 
 ============END GAME============
 		   |O |X 
 		 --------
-		 X |O |O 
+		 O |X |  
 		 --------
-		   |O |X 
+		 X |O |  

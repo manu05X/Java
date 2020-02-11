@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-public class FifteenPuzzle
+public class FifteenPuzzleBfs
 {	
 	final private int SIZE = 4;
 	private int iPuzzle[][];
@@ -187,7 +187,7 @@ public class FifteenPuzzle
 	public static void main (String args[])
 	{
 		
-		FifteenPuzzle game = new FifteenPuzzle();
+		FifteenPuzzleBfs game = new FifteenPuzzleBfs();
 		game.play();
 	}
 }
