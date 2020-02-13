@@ -2,13 +2,14 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-public class FifteenPuzzleBfs
+public class FifteenPuzzleBFS
 {	
 	final private int SIZE = 4;
 	private int iPuzzle[][];
 	private int fPuzzle[][];
-	private int xpos, ypos;
+	private int xpos, ypos, prevx, prevy;
 	private int count;
+	private Queue<Character> q;
 
 	private void init()
 	{
@@ -18,17 +19,14 @@ public class FifteenPuzzleBfs
 			BufferedReader br = new BufferedReader(new FileReader("inputFile.txt"));
 			String data = "";
 
-			while((data = br.readLine()) != null)
-			{ 
+			while((data = br.readLine()) != null){ 
 				String nums[] = data.split("\\t");
-				for(int i = 0; i < nums.length; i++)
-				{
+				for(int i = 0; i < nums.length; i++){
 					if(!nums[i].equals(""))
 						list.add(Integer.parseInt(nums[i]));
 				}
 			}
-		}catch(IOException e) 
-		{
+		}catch(IOException e) {
 			System.out.println("Error Occured While Opening the Input File!!");
 		}
 
@@ -50,37 +48,45 @@ public class FifteenPuzzleBfs
                 } 
 	}
 
-	FifteenPuzzle()
+	FifteenPuzzleBFS()
 	{
 		this.iPuzzle = new int[SIZE][SIZE];
 		this.fPuzzle = new int[SIZE][SIZE];
+		this.q = new LinkedList<Character> ();
+		this.prevx = this.prevy = -1;
 		this.init();
 		this.count = 0;
 	}
 
-	private void printOptions() 
+	private void setQueue() 
 	{
-		if(xpos != 0)
-			System.out.println("Press A for left");
-		if(xpos != SIZE-1)
-			System.out.println("Press D for right");
-		if(ypos != 0)
-                        System.out.println("Press W for up");
-                if(ypos != SIZE-1)
-                        System.out.println("Press S for down");
+		if(xpos != 0){
+			System.out.println("A for left");
+			q.add('A');	
+		}
+		if(ypos != 0){
+			System.out.println("W for up");
+			q.add('W');
+		}
+		if(xpos != SIZE-1){
+			System.out.println("D for right");
+			q.add('D');
+		}
+		if(ypos != SIZE-1){
+			System.out.println("S for down");
+			q.add('S');
+		}
 	}
 
 
 	private void disp()
 	{
-		for (int i = 0; i < SIZE; i++) 
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-                System.out.print("\t" + iPuzzle[i][j]);
-            }
+		for (int i = 0; i < SIZE; i++) {
+                        for (int j = 0; j < SIZE; j++){
+                                System.out.print("\t" + iPuzzle[i][j]);
+                        }
 			System.out.println();
-        } 
+                } 
 	}
 	
 	private boolean placeMaker(char turn)
@@ -90,21 +96,34 @@ public class FifteenPuzzleBfs
 		int flag = 0;
 
 		if(turn == 'W' && (this.ypos-1) >= 0) {
+			if(this.xpos == this.prevx && this.ypos-1 == this.prevy) 
+				return false;
 			this.ypos--;
 			flag = 1;
 		}
-                if(turn == 'A' && (this.xpos-1) >= 0) {
-                        this.xpos--;
-                        flag = 1;
-                }
-                if(turn == 'S' && (this.ypos+1) < SIZE) {
-                        this.ypos++;
-                        flag = 1;
-                }
-                if(turn == 'D' && (this.xpos+1) < SIZE) {
-                        this.xpos++;
-                        flag = 1;
-                }
+        if(turn == 'A' && (this.xpos-1) >= 0) {
+			if(this.xpos-1 == this.prevx && this.ypos == this.prevy) 
+				return false;
+			this.xpos--;
+            flag = 1;
+        }
+        if(turn == 'S' && (this.ypos+1) < SIZE) {
+			if(this.xpos == this.prevx && this.ypos+1 == this.prevy) 
+				return false;
+			this.ypos++;
+            flag = 1;
+        }
+        if(turn == 'D' && (this.xpos+1) < SIZE) {
+			if(this.xpos+1 == this.prevx && this.ypos == this.prevy) 
+				return false;
+            this.xpos++;
+            flag = 1;
+		}
+		
+
+		this.prevy = r;
+		this.prevx = c;
+
 		this.iPuzzle[r][c] = this.iPuzzle[this.ypos][this.xpos];
 		this.iPuzzle[this.ypos][this.xpos] = 0;
 	
@@ -112,15 +131,19 @@ public class FifteenPuzzleBfs
 		return false;
 	}
 	
-	public void logToFile(boolean isDisp)
+	public void logToFile(boolean isDisp, boolean isQPrint)
 	{
 		try {
 			BufferedWriter bw = 
-				new BufferedWriter(new FileWriter("outputFile.txt",true));
+				new BufferedWriter(new FileWriter("outputFileBfs.txt",true));
 		
-			bw.write("Iteration : " + this.count + "\n");
-			if(isDisp) {
-		                for (int i = 0; i < SIZE; i++) {
+			
+			if(isQPrint)
+				bw.write("\n\nQueue is : " + this.q + "\n");
+			else if(isDisp) {
+				bw.write("Iteration : " + this.count + "\n");		
+				bw.write("Computer Choose : " + this.q.peek() + "\n");
+		            	for (int i = 0; i < SIZE; i++) {
                         		for (int j = 0; j < SIZE; j++){
                                 		bw.write("\t" + iPuzzle[i][j]);
                         		}
@@ -147,38 +170,48 @@ public class FifteenPuzzleBfs
 		}
 		return true;
 	}
-	
+
+	private void flushQueue() {
+		while(!this.q.isEmpty()) {
+			q.remove();
+		}
+	}
+
 	public void play()
 	{
 		boolean isComplete = false;
 		this.disp();
-		while(!isComplete) 
-		{
-			this.printOptions();
-			Scanner input = new Scanner(System.in);
-			char c = input.next().charAt(0);
+		while(!isComplete) {
+			this.setQueue();
+		//	Scanner input = new Scanner(System.in);
+		//	char c = input.next().charAt(0);
 			
-			if(this.placeMaker(c)) 
-			{
+			
+			this.logToFile(false,true);
+			while(!this.placeMaker(q.peek())) {
+				q.remove();
+			}
+			System.out.println("Computer Chooses : " + q.peek());
+		//	if() {
 				this.count++;
 				System.out.print("\033\143");
 				
 				this.disp();
-				this.logToFile(true);
-				
-				if((isComplete = checkPattern())) 
-				{ 
-					this.logToFile(false);
+				this.logToFile(true,false);
+				q.remove();
+
+				if((isComplete = checkPattern())) { 
+					this.logToFile(false,false);
 					JOptionPane.showMessageDialog(null,"Congratulation!! Pattern Matched");
 				}
-				if(this.count%10 == 0) 
-				{
+				if(this.count%10 == 0) {
 					int res = JOptionPane.showConfirmDialog(null,"Want To Play More??","Continue",JOptionPane.YES_NO_OPTION);
 					if(res == 1) System.exit(0);
 				}
-			}
-			else 
-				System.out.println("Invalid Turn!! Try Again.");
+		//	}
+		//	else 
+		//		System.out.println("Invalid Turn!! Try Again.");
+			this.flushQueue();
 		}
 
 	}
@@ -187,7 +220,7 @@ public class FifteenPuzzleBfs
 	public static void main (String args[])
 	{
 		
-		FifteenPuzzleBfs game = new FifteenPuzzleBfs();
+		FifteenPuzzleBFS game = new FifteenPuzzleBFS();
 		game.play();
 	}
 }

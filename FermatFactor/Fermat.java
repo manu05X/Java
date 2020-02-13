@@ -1,14 +1,15 @@
 import java.io.*;
 import java.util.Scanner;
 import java.time.LocalDateTime;
+import java.math.BigInteger;
 
 public class Fermat
 {
-        public void trialDivision(long N)
+        public void trialDivision(BigInteger N)
         {
                 assert(N>1);
                 assert(N%2!=0);
-                long a = 3;
+                BigInteger a = 3;
                 while (a <= N)
                 {
                         if (N % a == 0)
@@ -20,36 +21,38 @@ public class Fermat
                                 a += 1;
                         }
                 }
-                long b =(long)N/a;
-                long p = a;
-                long q = b;
+                BigInteger b =(BigInteger)N/a;
+                BigInteger p = a;
+                BigInteger q = b;
                 display(p,q);
         }
-        public void FermatFact(long N)
+        public void FermatFact(BigInteger N)
         {
                 assert(N>1);
                 assert(N%2!=0);
-                                long a = (long)Math.ceil(Math.sqrt(N));
-                long b2 = a * a - N;
+                        BigInteger a = (BigInteger)Math.ceil(Math.sqrt(N));
+                BigInteger b2 = (a.multiply(a)).subtract(N);
+
+                BigInteger one = new BigInteger("1");
                 while(!isSquare(b2))
                 {
-                        a++;
-                        b2 = a*a - N;
+                        a.add(one);
+                        b2 = (a.multiply(a)).subtract(N);
                 }
-                long b =(long)Math.sqrt(b2);
-                long p = a - b;
-                long q = a + b;
+                BigInteger b =(BigInteger)Math.sqrt(b2);
+                BigInteger p = a.subtract(b);
+                BigInteger q = a.add(b);
                 display(p , q);
         }
 
-        public boolean isSquare(long N)
+        public boolean isSquare(BigInteger N)
         {
-                long sqr = (long)Math.sqrt(N);
+                BigInteger sqr = (BigInteger)Math.sqrt(N);
                 if(sqr*sqr == N ||(sqr+1)*(sqr+1) == N)
                         return true;
                 return false;
         }
-        public void display(long p,long q)
+        public void display(BigInteger p,BigInteger q)
         {
                 System.out.println("\nRoots Of Number :"+p+","+q);
         }
@@ -59,7 +62,7 @@ public class Fermat
                 // System.out.println("Enter the ODD NUMBER");
                 // long N = sc.nextLong();
                 System.out.println("Given ODD NUMBER is: "+args[0]);
-                int N = Integer.parseInt(args[0]);      //input number is taken as String is convert into Integer and it will store in a 
+                BigInteger N = new BigInteger(args[0]);      //input number is taken as String is convert into Integer and it will store in a 
 
                 Fermat ff = new Fermat();
 
