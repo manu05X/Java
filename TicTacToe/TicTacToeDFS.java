@@ -266,12 +266,16 @@ public class TicTacToeDFS
         x = y = 0;
         int i = 0;
         this.logToFile(0, 0, 0, false, false, false, false, true, false);
-        while(!isOver) {
-            if(i == 0) {
+        while(!isOver)
+        {
+            if(i == 0) 
+            {
                 System.out.println("PLayer " + ", Its Your Turn : ");
                 y = this.getPosition('Y');
                 x = this.getPosition('X');
-            }else {
+            }
+            else 
+            {
                 System.out.println("Stack : " + s);
 //              this.AIturns(x,y);
 
